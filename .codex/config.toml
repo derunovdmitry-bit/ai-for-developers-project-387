@@ -1,0 +1,7 @@
+[mcp_servers.shadcn]
+command = "npx"
+args = ["shadcn@latest", "mcp"]
+
+[mcp_servers.render]
+url = "https://mcp.render.com/mcp"
+http_headers = { Authorization = "Bearer rnd_UolcrnIBW4Ubmzj5fG1Tsamb3bpJ" }

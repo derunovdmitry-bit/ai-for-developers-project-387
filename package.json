@@ -1,0 +1,24 @@
+{
+  "name": "calendar-booking-mvp",
+  "version": "0.2.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "lint:frontend": "npm --prefix frontend run lint",
+    "dev:backend": "npm --prefix backend run dev",
+    "build:backend": "npm --prefix backend run build",
+    "lint:backend": "npm --prefix backend run lint",
+    "test:backend": "npm --prefix backend run test",
+    "test:integration": "playwright test",
+    "test:integration:ui": "playwright test --ui",
+    "test:ci": "npm run build:backend && npm run lint:backend && npm run test:backend && npm run build:frontend && npm run lint:frontend && npm run openapi:generate && npm run test:integration",
+    "openapi:generate": "npm --prefix typeSpec run emit",
+    "mock:api": "npm run openapi:generate && prism mock typeSpec/tsp-output/schema/openapi.yaml --host 127.0.0.1 --port 4010"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.0",
+    "@stoplight/prism-cli": "^5.14.2"
+  }
+}

@@ -1,0 +1,66 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            backend/package-lock.json
+            frontend/package-lock.json
+            typeSpec/package-lock.json
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install backend dependencies
+        run: npm ci --prefix backend
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+
+      - name: Install TypeSpec dependencies
+        run: npm ci --prefix typeSpec
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Build backend
+        run: npm run build:backend
+
+      - name: Lint backend
+        run: npm run lint:backend
+
+      - name: Test backend
+        run: npm run test:backend
+
+      - name: Build frontend
+        run: npm run build:frontend
+
+      - name: Lint frontend
+        run: npm run lint:frontend
+
+      - name: Generate OpenAPI
+        run: npm run openapi:generate
+
+      - name: Run integration tests
+        run: npm run test:integration

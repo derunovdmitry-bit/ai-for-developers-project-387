@@ -1,0 +1,10 @@
+{
+  "release-type": "node",
+  "include-component-in-tag": false,
+  "packages": {
+    ".": {
+      "package-name": "calendar-booking-mvp",
+      "changelog-path": "CHANGELOG.md"
+    }
+  }
+}
